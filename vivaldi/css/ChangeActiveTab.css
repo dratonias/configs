@@ -1,0 +1,13 @@
+#browser {
+    --colorHighlightFg: #EBDBB2 !important;
+    --colorAccentFg: #EBDBB2 !important;
+  }
+#browser .tab-position .tab.active { color: #EBDBB2 !important;}
+#webview-container {
+    --mosaicPadding: 0px !important;
+   }
+  
+  .tiled.webpageview {
+    margin: -2px;
+    border-radius: 0;
+   }
