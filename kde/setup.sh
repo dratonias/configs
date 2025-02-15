@@ -27,11 +27,15 @@ case "$installChoice" in
     echo "Preparing to install packages..."
       echo "Installing firmware..."
         sudo xbps-install -Sy linux-firmware linux-firmware-amd mesa-dri
-      # echo "Installing audio packages..."
-        # sudo xbps-install -Sy alsa-utils alsa-plugins-pulseaudio ffmpeg ffmpegthumbs pulseaudio pipewire
+      echo "Installing audio packages..."
+        sudo xbps-install -Sy alsa-utils alsa-plugins-pulseaudio ffmpeg ffmpegthumbs pipewire
+      echo "Installing bluetooth..."
+        sudo xbps-install -Sy bluez libspa-bluetooth
       echo "Installing desktop environment..."
         sudo xbps-install -Sy kde-plasma NetworkManager
         # sudo xbps-install -Sy xorg xdg-user-dirs xdg-utils 
+      echo "Enabling firewall..."
+        sudo xbps-install -Sy runit-iptables
       echo "Installing additional applications..."
         sudo xbps-install -Sy neofetch grub-customizer qbittorrent
         # Code editor
@@ -47,7 +51,7 @@ case "$installChoice" in
       sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
       flatpak install flathub com.vivaldi.Vivaldi
       flatpak install flathub com.spotify.Client
-
+      flatpak install flathub com.discordapp.Discord
 
     echo "Configuring system..."
     echo "Setting up services..."
@@ -56,11 +60,14 @@ case "$installChoice" in
     sudo ln -s /etc/sv/dbus /var/service/
     sudo ln -s /etc/sv/sddm /var/service/
     sudo ln -s /etc/sv/NetworkManager /var/service/
+    sudo ln -s /etc/sv/bluetoothd /var/service/
 
     echo "Starting services..."
+
     sudo sv up dbus
     sudo sv up sddm
     sudo sv up NetworkManager 
+    sudo sv up bluetoothd
     
     echo "All done! Please reboot for all changes to take effect."
   ;;
