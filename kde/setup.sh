@@ -32,8 +32,7 @@ case "$installChoice" in
       echo "Installing bluetooth..."
         sudo xbps-install -Sy bluez libspa-bluetooth
       echo "Installing desktop environment..."
-        sudo xbps-install -Sy kde-plasma NetworkManager
-        # sudo xbps-install -Sy xorg xdg-user-dirs xdg-utils 
+        sudo xbps-install -Sy kde-plasma NetworkManager xorg xdg-user-dirs xdg-utils xtools kwalletmanager
       echo "Enabling firewall..."
         sudo xbps-install -Sy runit-iptables
       echo "Installing additional applications..."
