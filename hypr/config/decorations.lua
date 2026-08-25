@@ -1,4 +1,4 @@
--- Look and feel configuration
+-- Look and feel configuration (colors are managed by the Noctalia theme)
 
 hl.config({
     general = {
@@ -7,27 +7,5 @@ hl.config({
         border_size = 2,
         extend_border_grab_area = 10,
         resize_on_border = true,
-        col = {
-            active_border = {
-                colors = { PRIMARY, PRIMARY_DARK },
-                angle = 45,
-            },
-        },
-    },
-    group = {
-        col = {
-            border_active = BLUE,
-            border_inactive = GREY,
-            border_locked_active = RED,
-            border_locked_inactive = GREY,
-        },
-        groupbar = {
-            col = {
-                active = PRIMARY,
-                inactive = GREY,
-                locked_active = RED,
-                locked_inactive = GREY,
-            },
-        },
     },
 })

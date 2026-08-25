@@ -115,14 +115,19 @@ wallpaper_scheme = "muted"
     [theme.templates]
     builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
 
+        [theme.templates.user.hyprland]
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/hyprland.lua"
+        output_path = "$XDG_CONFIG_HOME/hypr/noctalia.lua"
+        post_hook = "/usr/share/noctalia/assets/templates/hyprland/apply.sh apply"
+
 [widget.bar]
 color_by_usage = false
 extras = "none"
 type = "felipeartur/ai-usagebar:bar"
 
 [widget.bluetooth]
-color = "#7daea3"
-icon_color = "#7daea3"
+color = "secondary"
+icon_color = "secondary"
 
 [widget.btbat]
 type = "timo/btbattery:stats"
@@ -134,24 +139,24 @@ text = "⫻"
 color = "outline"
 
 [widget.clock]
-color = "#ebdbb2"
+color = "on_surface"
 format = "   {:%H:%M} | {:%d.%m.%y}"
 tooltip_format = "{:%H:%M:%S · %A, %d.%m.%Y}"
 vertical_format = "{:%H %M}\\n──\\n{:%d %m}"
 
 [widget.launcher]
-color = "secondary"
+color = "outline"
 
 [widget.media]
 hide_when_no_media = true
 title_scroll = "on_hover"
 
 [widget.network]
-color = "#89b482"
+color = "primary"
 show_vpn_label = true
 
 [widget.notifications]
-color = "#d8a657"
+color = "tertiary"
 
 [widget.privacy]
 active_color = "error"
@@ -225,7 +230,7 @@ pinned = [ "discord", "steam", "arch-update" ]
 drawer = true
 
 [widget.volume]
-color = "#bdae93"
+color = "on_surface_variant"
 
 [widget.workspaces]
 active_pill_size = 2.5

@@ -17,4 +17,9 @@ fi
 ln -sfn "$DIR/config.toml" "$HOME/.config/noctalia/config.toml"
 echo "linked $HOME/.config/noctalia/config.toml -> $DIR/config.toml"
 
+for d in palettes templates; do
+    ln -sfn "$DIR/$d" "$HOME/.config/noctalia/$d"
+    echo "linked $HOME/.config/noctalia/$d -> $DIR/$d"
+done
+
 noctalia msg config-reload >/dev/null 2>&1 && echo "noctalia reloaded" || echo "noctalia not running (skip reload)"
