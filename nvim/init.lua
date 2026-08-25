@@ -196,7 +196,50 @@ require('guess-indent').setup {}
 
 -- [[ FFF: file finder + live grep ]]
 vim.pack.add { gh 'dmtrKovalenko/fff.nvim' }
-require('fff').setup {}
+require('fff').setup {
+  hl = {
+    grep_match = 'IncSearch',
+    winhl = {
+      preview = 'Normal:NormalFloat,FloatBorder:FloatBorder,FloatTitle:Title,CursorLine:FFFPreviewCursorLine',
+    },
+  },
+}
+
+-- fff uses one group for every grep occurrence; overlay just the selected result in its preview.
+do
+  local selected_grep_ns = vim.api.nvim_create_namespace('fff-selected-grep-match')
+  local location_utils = require('fff.location_utils')
+  local clear_location_highlights = location_utils.clear_location_highlights
+  local highlight_grep_matches = location_utils.highlight_grep_matches
+
+  location_utils.clear_location_highlights = function(bufnr, namespace)
+    clear_location_highlights(bufnr, namespace)
+    clear_location_highlights(bufnr, selected_grep_ns)
+  end
+
+  location_utils.highlight_grep_matches = function(bufnr, location, namespace)
+    local result = highlight_grep_matches(bufnr, location, namespace)
+    if not location.line or not vim.api.nvim_buf_is_valid(bufnr) then return result end
+
+    local ranges = location.fuzzy_match_ranges
+    if not ranges then
+      local query = require('fff.fuzzy').parse_grep_query(location.grep_query).grep_text
+      if query == '' or not location.col then return result end
+      ranges = { { location.col - 1, location.col - 1 + #query } }
+    end
+
+    local line = math.max(1, math.min(location.line, vim.api.nvim_buf_line_count(bufnr)))
+    for _, range in ipairs(ranges) do
+      vim.api.nvim_buf_set_extmark(bufnr, selected_grep_ns, line - 1, range[1], {
+        end_col = range[2],
+        hl_group = 'FFFGrepMatch',
+        priority = 1001,
+      })
+    end
+
+    return result
+  end
+end
 
 vim.keymap.set('n', '<leader>sf', function() require('fff').find_files() end, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>g', function() require('fff').live_grep() end, { desc = '[G]rep' })
@@ -299,6 +342,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local map = function(keys, func, desc) vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc }) end
 
+    map('gd', vim.lsp.buf.definition, '[G]o to [D]efinition')
     map('K', vim.lsp.buf.hover, 'Hover Documentation')
     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
     map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
