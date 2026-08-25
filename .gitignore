@@ -1,0 +1,4 @@
+# Syncthing internals (repo lives inside the ~/Sync sync folder)
+.stfolder/
+.stignore
+*sync-conflict*
