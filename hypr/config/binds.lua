@@ -22,13 +22,12 @@ end
 ---- WINDOW MANAGEMENT ----
 ---------------------------
 
--- Window manipulation
+-- Window manipulation (left half: state)
 hl.bind(mainMod .. " + Escape",      hl.dsp.exec_cmd("hyprctl kill"))
 hl.bind(mainMod .. " + Q",           hl.dsp.window.close())
 hl.bind(mainMod .. " + G",           hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + M",           hl.dsp.window.fullscreen({ mode = 1 }))
 hl.bind(mainMod .. " + F",           hl.dsp.window.fullscreen())
-hl.bind(mainMod .. " + J",           hl.dsp.layout("togglesplit"))
+hl.bind(mainMod .. " + B",           hl.dsp.layout("togglesplit"))
 
 -- Change focus
 hl.bind(mainMod .. " + Left",  hl.dsp.focus({ direction = "left" }))
@@ -37,9 +36,13 @@ hl.bind(mainMod .. " + Up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + Down",  hl.dsp.focus({ direction = "down" }))
 hl.bind(mainMod .. " + Tab",   hl.dsp.exec_cmd(noctCall .. "window-switcher"))
 
--- Focus previous / next monitor (ladder: ALT = monitor)
+-- Focus previous / next monitor (ladder: SHIFT = move window to monitor)
 hl.bind(mainMod .. " + ALT + Left",  function() hl.dsp.focus({ monitor = neighbor_monitor(-1) }) end)
 hl.bind(mainMod .. " + ALT + Right", function() hl.dsp.focus({ monitor = neighbor_monitor(1) }) end)
+hl.bind(mainMod .. " + U",           function() hl.dsp.focus({ monitor = neighbor_monitor(-1) }) end)
+hl.bind(mainMod .. " + P",           function() hl.dsp.focus({ monitor = neighbor_monitor(1) }) end)
+hl.bind(mainMod .. " + SHIFT + U",   function() hl.dsp.window.move({ monitor = neighbor_monitor(-1) }) end)
+hl.bind(mainMod .. " + SHIFT + P",   function() hl.dsp.window.move({ monitor = neighbor_monitor(1) }) end)
 
 -- Move active window (ladder: SHIFT = move window)
 hl.bind(mainMod .. " + SHIFT + Up",                   hl.dsp.window.move({ direction = "u" }))
@@ -47,9 +50,15 @@ hl.bind(mainMod .. " + SHIFT + Down",                 hl.dsp.window.move({ direc
 hl.bind(mainMod .. " + SHIFT + Left",                 hl.dsp.window.move({ direction = "l" }))
 hl.bind(mainMod .. " + SHIFT + Right",                hl.dsp.window.move({ direction = "r" }))
 
--- Move active window to previous / next workspace
-hl.bind(mainMod .. " + CONTROL + SHIFT + Left",       hl.dsp.window.move({ workspace = "m-1" }))
-hl.bind(mainMod .. " + CONTROL + SHIFT + Right",      hl.dsp.window.move({ workspace = "m+1" }))
+-- Focus with right-hand keys (ladder: SHIFT = move window)
+hl.bind(mainMod .. " + J",           hl.dsp.focus({ direction = "left" }))
+hl.bind(mainMod .. " + K",           hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + I",           hl.dsp.focus({ direction = "up" }))
+hl.bind(mainMod .. " + L",           hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + J",   hl.dsp.window.move({ direction = "l" }))
+hl.bind(mainMod .. " + SHIFT + K",   hl.dsp.window.move({ direction = "d" }))
+hl.bind(mainMod .. " + SHIFT + I",   hl.dsp.window.move({ direction = "u" }))
+hl.bind(mainMod .. " + SHIFT + L",   hl.dsp.window.move({ direction = "r" }))
 
 -- Move active window to previous / next monitor (ladder: SHIFT + ALT = move window to monitor)
 hl.bind(mainMod .. " + SHIFT + ALT + Left",           function() hl.dsp.window.move({ monitor = neighbor_monitor(-1) }) end)
@@ -89,18 +98,14 @@ hl.bind(mainMod .. " + code:86", function() zoomfunction(0.3) end, { repeating =
 ------------------
 
 hl.bind(mainMod .. " + T",          hl.dsp.exec_cmd(launchPrefix .. TERMINAL))
-hl.bind(mainMod .. " + N",          hl.dsp.exec_cmd(launchPrefix .. EDITOR))
+hl.bind(mainMod .. " + Y",          hl.dsp.exec_cmd(launchPrefix .. EDITOR))
 hl.bind(mainMod .. " + W",          hl.dsp.exec_cmd(launchPrefix .. BROWSER))
-hl.bind(mainMod .. " + C",          hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
 hl.bind(mainMod .. " + E",          hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER))
 hl.bind("XF86Calculator",           hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
-hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"))
-hl.bind(mainMod .. " + Z",          hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
-hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
 hl.bind(mainMod .. " + A",          hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center notifications"))
 hl.bind(mainMod .. " + R",          hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
-hl.bind(mainMod .. " + L",          hl.dsp.exec_cmd(noctCall .. "session lock"))
-hl.bind(mainMod .. " + ALT + L",    hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
+hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
+-- TODO: session lock (was SUPER + L) still needs a bind
 
 ---------------------------
 ---- HARDWARE CONTROLS ----
@@ -127,9 +132,9 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"),
 -------------------
 
 -- Screen Capture
-hl.bind(mainMod .. " + P",         hl.dsp.exec_cmd("hyprpicker -a -n"))
-hl.bind(mainMod .. " + S",         hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
+hl.bind(mainMod .. " + C",          hl.dsp.exec_cmd("hyprpicker -a -n"))
+hl.bind(mainMod .. " + S",          hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
+hl.bind(mainMod .. " + D",          hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
 
 -- Theming and Wallpaper
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"))
@@ -147,13 +152,9 @@ for i = 1, TOTAL_WORKSPACES do
     hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
 end
 
--- Switch through workspaces with keyboard
-hl.bind(mainMod .. " + CONTROL + Left",  hl.dsp.focus({ workspace = "m-1" }))
-hl.bind(mainMod .. " + CONTROL + Right", hl.dsp.focus({ workspace = "m+1" }))
-
 -- Named gaming workspace
-hl.bind(mainMod .. " + U",           hl.dsp.focus({ workspace = "name:gaming" }))
-hl.bind(mainMod .. " + SHIFT + U",   hl.dsp.window.move({ workspace = "name:gaming" }))
+hl.bind(mainMod .. " + udiaeresis",  hl.dsp.focus({ workspace = "name:gaming" }))
+hl.bind(mainMod .. " + adiaeresis",  hl.dsp.window.move({ workspace = "name:gaming" }))
 
 -- Scroll through existing workspaces & monitors
 hl.bind(mainMod .. " + mouse_down",           hl.dsp.focus({ workspace = "m-1" }))
