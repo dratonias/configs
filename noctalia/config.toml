@@ -230,7 +230,7 @@ workspace_label_placement = "centered"
 [widget.tray]
 capsule = false
 hide_passive = false
-pinned = [ "discord", "steam", "arch-update" ]
+pinned = [ "discord", "steam", "arch-update", "LM Studio" ]
 drawer = true
 
 [widget.volume]
