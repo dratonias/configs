@@ -120,6 +120,10 @@ wallpaper_scheme = "muted"
         output_path = "$XDG_CONFIG_HOME/hypr/noctalia.lua"
         post_hook = "/usr/share/noctalia/assets/templates/hyprland/apply.sh apply"
 
+        [theme.templates.user.nvim]
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/nvim.lua"
+        output_path = "$XDG_CONFIG_HOME/nvim/colors/gruvbox-neon.lua"
+
 [widget.bar]
 color_by_usage = false
 extras = "none"

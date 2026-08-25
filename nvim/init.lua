@@ -167,9 +167,13 @@ vim.api.nvim_create_autocmd('PackChanged', {
 })
 
 -- [[ Colorscheme ]]
+-- gruvbox-neon is rendered by Noctalia (noctalia msg templates-apply) from the
+-- active shell palette; fall back to gruvbox.nvim if it hasn't been rendered yet.
 vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
-require('gruvbox').setup { contrast = 'soft' }
-vim.cmd.colorscheme 'gruvbox'
+if not pcall(vim.cmd.colorscheme, 'gruvbox-neon') then
+  require('gruvbox').setup { contrast = 'soft' }
+  vim.cmd.colorscheme 'gruvbox'
+end
 
 -- [[ Which-key ]]
 vim.pack.add { gh 'folke/which-key.nvim' }
