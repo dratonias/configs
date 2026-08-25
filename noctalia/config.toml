@@ -246,5 +246,12 @@ pill_scale = 0.80
 show_labels = true
 style = "minimal"
 
+[notification.filter.waydroid-whatsapp]
+enabled       = true
+match         = "waydroid.com.whatsapp"
+show_toast    = true
+save_history  = false
+play_sound    = false
+
 [osd.kinds]
 media = false
