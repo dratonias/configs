@@ -1,0 +1,241 @@
+[accessibility]
+ui_scale = 1.20
+
+[bar.default]
+background_opacity = 0.0
+center = [ "clock" ]
+concave_edge_corners = true
+end = [ "group:g2", "group:g1" ]
+margin_edge = 0
+margin_ends = 0
+padding = 0
+position = "left"
+radius = 0
+radius_bottom_left = 0
+radius_bottom_right = 0
+scale = 1.5
+start = [ "taskbar" ]
+thickness = 36
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "session" ]
+    opacity = 0.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g2"
+    members = [ "tray", "privacy", "notifications", "bluetooth", "network", "volume", "battery" ]
+    opacity = 0.0
+    padding = 0.0
+
+[plugins]
+enabled = [ "felipeartur/ai-usagebar", "noctalia/bitwarden", "timo/btbattery", "timo/sysgrid" ]
+
+[shell]
+clipboard_image_action_command = "satty -f -"
+corner_radius_scale = 0.0
+external_ip_enabled = true
+font_family = "Inter"
+launch_apps_as_systemd_services = true
+polkit_agent = true
+settings_show_advanced = true
+
+    [shell.animation]
+    speed = 4.0
+
+    [shell.greeter_sync]
+    auto_sync = true
+
+    [shell.panel]
+    floating_offset = 0
+    open_near_click_control_center = true
+    session_placement = "floating"
+    session_position = "center"
+
+    [shell.screenshot]
+    copy_to_clipboard = true
+    pipe_command = 'sh -c "satty -f - --actions-on-enter save-to-file --early-exit save -o -" | ~/.local/bin/satty-to-clipboard'
+    pipe_to_command = true
+    save_to_file = false
+
+    [[shell.session.actions]]
+    action = "lock"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "1"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "logout"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "2"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "lock_and_suspend"
+    countdown_seconds = 3.0
+    enabled = true
+    shortcut = "3"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "reboot"
+    countdown_seconds = 3.0
+    enabled = true
+    shortcut = "4"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "shutdown"
+    countdown_seconds = 3.0
+    enabled = true
+    shortcut = "5"
+    variant = "destructive"
+
+[system.monitor]
+gpu_poll_seconds = 2
+
+[theme]
+builtin = "Gruvbox"
+community_palette = "Gruvbox Material"
+mode = "dark"
+source = "community"
+wallpaper_scheme = "muted"
+
+    [theme.templates]
+    builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "qt", "alacritty" ]
+
+[widget.bar]
+color_by_usage = false
+extras = "none"
+type = "felipeartur/ai-usagebar:bar"
+
+[widget.bluetooth]
+color = "#7daea3"
+icon_color = "#7daea3"
+
+[widget.btbat]
+type = "timo/btbattery:stats"
+poll_minutes = 1
+
+[widget.btsep]
+type = "text"
+text = "⫻"
+color = "outline"
+
+[widget.clock]
+color = "#ebdbb2"
+format = "   {:%H:%M} | {:%d.%m.%y}"
+tooltip_format = "{:%H:%M:%S · %A, %d.%m.%Y}"
+vertical_format = "{:%H %M}\\n──\\n{:%d %m}"
+
+[widget.launcher]
+color = "secondary"
+
+[widget.media]
+hide_when_no_media = true
+title_scroll = "on_hover"
+
+[widget.network]
+color = "#89b482"
+show_vpn_label = true
+
+[widget.notifications]
+color = "#d8a657"
+
+[widget.privacy]
+active_color = "error"
+hide_inactive = true
+
+[widget.session]
+color = "error"
+
+[widget.sysgrid]
+type = "timo/sysgrid:stats"
+
+[widget.spacer_1]
+type = "spacer"
+
+[widget.temp]
+show_value = false
+
+[widget.sm_cpu]
+type = "sysmon"
+label_show_units = false
+stat = "cpu_usage"
+glyph = "cpu-2"
+show_value = true
+visualization = "none"
+
+[widget.sm_ram]
+type = "sysmon"
+stat = "ram_used"
+glyph = "cpu-2"
+show_value = true
+visualization = "none"
+label_show_units = false
+
+[widget.sm_gpu]
+type = "sysmon"
+label_show_units = false
+stat = "gpu_usage"
+glyph = "gpu-usage"
+show_value = true
+visualization = "none"
+
+[widget.sm_vram]
+type = "sysmon"
+label_show_units = false
+stat = "gpu_vram"
+glyph = "gpu-usage"
+show_value = true
+visualization = "none"
+
+[widget.sysmon_2]
+glyph = "gpu-usage"
+show_value = false
+stat = "gpu_temp"
+type = "sysmon"
+
+[widget.sysmon_3]
+glyph = "cpu-2"
+stat = "ram_used"
+type = "sysmon"
+
+[widget.taskbar]
+capsule_radius = "auto"
+group_by_workspace = true
+show_active_indicator = false
+workspace_label_placement = "centered"
+
+[widget.tray]
+capsule = false
+hide_passive = false
+pinned = [ "discord", "steam", "arch-update" ]
+drawer = true
+
+[widget.volume]
+color = "#bdae93"
+
+[widget.workspaces]
+active_pill_size = 2.5
+capsule = true
+capsule_fill = "on_primary"
+focused_output_only = true
+inactive_pill_size = 1.0
+pill_scale = 0.80
+show_labels = true
+style = "minimal"
+
+[osd.kinds]
+media = false
