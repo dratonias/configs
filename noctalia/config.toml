@@ -249,12 +249,37 @@ pill_scale = 0.80
 show_labels = true
 style = "minimal"
 
-[notification.filter.waydroid-whatsapp]
-enabled       = true
-match         = "waydroid.com.whatsapp"
-show_toast    = true
-save_history  = false
-play_sound    = false
+[audio]
+enable_sounds = true
+sound_volume = 0.25
+# Empty uses Noctalia's bundled notification.wav.
+notification_sound = ""
+
+[notification]
+filter_order = [ "default" ]
+
+# Every notification is a short-lived toast with sound, never kept in history
+# or allowed to become resident. Future app-specific filters must be placed
+# before "default" in filter_order to override these settings.
+[notification.filter.default]
+enabled = true
+# `match` only supports literal app/category tokens; this regex covers every body.
+match_content = ".*"
+show_toast = true
+save_history = false
+play_sound = true
+allow_permanent = false
+
+# Example retained/resident rule:
+# [notification]
+# filter_order = [ "discord", "default" ]
+# [notification.filter.discord]
+# enabled = true
+# match = "discord"
+# show_toast = true
+# save_history = true
+# play_sound = true
+# allow_permanent = true
 
 [osd.kinds]
 media = false
