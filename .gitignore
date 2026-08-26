@@ -2,3 +2,5 @@
 .stfolder/
 .stignore
 *sync-conflict*
+.syncthing.*.tmp
+*.tmp

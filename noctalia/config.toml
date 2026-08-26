@@ -159,6 +159,7 @@ title_scroll = "on_hover"
 
 [widget.network]
 color = "primary"
+show_label = false
 show_vpn_label = true
 
 [widget.notifications]
