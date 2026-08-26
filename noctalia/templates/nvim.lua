@@ -35,7 +35,7 @@ local links = function(link, target)
 end
 
 -- Editor UI ------------------------------------------------------------------
-hi("Normal",       { fg = c.fg, bg = c.bg })
+hi("Normal",       { fg = c.fg })
 hi("NormalFloat",  { fg = c.fg, bg = c.bg_dim })
 hi("FloatBorder",  { fg = c.pink, bg = c.bg_dim })
 hi("FloatTitle",   { fg = c.pink, bg = c.bg_dim, bold = true })
