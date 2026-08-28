@@ -38,7 +38,7 @@ thickness = 36
     padding = 0.0
 
 [plugins]
-enabled = [ "dratonias/ai-usagebar", "noctalia/bitwarden", "timo/btbattery", "timo/sysgrid", "timo/netpanel" ]
+enabled = [ "dratonias/ai-usagebar", "noctalia/bitwarden", "dratonias/btbattery", "dratonias/sysgrid", "dratonias/netpanel" ]
 
 [shell]
 clipboard_image_action_command = "satty -f -"
@@ -136,7 +136,7 @@ color = "secondary"
 icon_color = "secondary"
 
 [widget.btbat]
-type = "timo/btbattery:stats"
+type = "dratonias/btbattery:stats"
 poll_minutes = 1
 
 [widget.btsep]
@@ -145,7 +145,7 @@ text = "⫻"
 color = "outline"
 
 [widget.netpanel]
-type = "timo/netpanel:bar"
+type = "dratonias/netpanel:bar"
 color = "primary"
 
 [widget.clock]
@@ -177,7 +177,7 @@ hide_inactive = true
 color = "error"
 
 [widget.sysgrid]
-type = "timo/sysgrid:stats"
+type = "dratonias/sysgrid:stats"
 
 [widget.spacer_1]
 type = "spacer"
