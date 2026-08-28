@@ -19,6 +19,7 @@ if is_laptop then
         output   = "eDP-1",
         mode     = "preferred",
         position = "auto",
+        scale    = 1.25,
     })
 else
     -- Desktop: ROG PG258Q (main, 240Hz), VG248 (left), BenQ GW2480 (right, rotated)
