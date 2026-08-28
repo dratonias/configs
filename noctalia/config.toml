@@ -33,12 +33,12 @@ thickness = 36
     enabled = true
     fill = "surface_variant"
     id = "g2"
-    members = [ "tray", "privacy", "notifications", "bluetooth", "network", "volume", "battery" ]
+    members = [ "tray", "privacy", "notifications", "bluetooth", "netpanel", "volume", "battery" ]
     opacity = 0.0
     padding = 0.0
 
 [plugins]
-enabled = [ "dratonias/ai-usagebar", "noctalia/bitwarden", "timo/btbattery", "timo/sysgrid" ]
+enabled = [ "dratonias/ai-usagebar", "noctalia/bitwarden", "timo/btbattery", "timo/sysgrid", "timo/netpanel" ]
 
 [shell]
 clipboard_image_action_command = "satty -f -"
@@ -143,6 +143,10 @@ poll_minutes = 1
 type = "text"
 text = "⫻"
 color = "outline"
+
+[widget.netpanel]
+type = "timo/netpanel:bar"
+color = "primary"
 
 [widget.clock]
 color = "on_surface"
