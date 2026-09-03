@@ -3,7 +3,7 @@
 -- Numbering starts on the main (middle) monitor, then the rest left -> right
 -- (see WS_MONITORS in variables.lua).
 
-hl.workspace_rule({ workspace = "name:gaming", monitor = PRIMARY_MONITOR, default = true })
+hl.workspace_rule({ workspace = "name:gaming", monitor = PRIMARY_MONITOR })
 
 for i, monitor in ipairs(WS_MONITORS) do
     for j = 1, NUM_WPM do

@@ -14,7 +14,7 @@
     "mOnSurfaceVariant": "#a89984",
     "mSurfaceDim": "#282828",
     "mOnSurfaceDim": "#928374",
-    "mOutline": "#ff4fd0",
+    "mOutline": "#ed3337",
     "mOutlineVariant": "#504945",
     "mShadow": "#282828",
     "mHover": "#ffd400",
@@ -32,7 +32,7 @@
         "green": "#7cff00",
         "yellow": "#ffd400",
         "blue": "#3fd9ff",
-        "magenta": "#b76bff",
+        "magenta": "#ed3337",
         "cyan": "#00e5ff",
         "white": "#ddc7a1"
       },
@@ -42,7 +42,7 @@
         "green": "#aaff33",
         "yellow": "#ffe14d",
         "blue": "#7ce4ff",
-        "magenta": "#c98fff",
+        "magenta": "#ff7a7d",
         "cyan": "#4dedff",
         "white": "#fbf1c7"
       }
@@ -63,7 +63,7 @@
     "mOnSurfaceVariant": "#7c6f64",
     "mSurfaceDim": "#ebdbb2",
     "mOnSurfaceDim": "#928374",
-    "mOutline": "#b16286",
+    "mOutline": "#8f2022",
     "mOutlineVariant": "#d5c4a1",
     "mShadow": "#d5c4a1",
     "mHover": "#d79921",
@@ -81,7 +81,7 @@
         "green": "#98971a",
         "yellow": "#d79921",
         "blue": "#458588",
-        "magenta": "#b16286",
+        "magenta": "#8f2022",
         "cyan": "#689d6a",
         "white": "#ebdbb2"
       },
@@ -91,7 +91,7 @@
         "green": "#79740e",
         "yellow": "#b57614",
         "blue": "#076678",
-        "magenta": "#8f3f71",
+        "magenta": "#5c1416",
         "cyan": "#427b58",
         "white": "#3c3836"
       }

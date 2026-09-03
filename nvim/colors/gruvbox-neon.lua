@@ -19,9 +19,9 @@ local c = {
     on_yellow     = "#1d2021",
     red           = "#e03636",
     on_red        = "#1d2021",
-    pink          = "#ff4fd0",
-    border        = "#ff02bc",
-    purple        = "#b76bff",
+    pink          = "#ed3337",
+    border        = "#c21115",
+    purple        = "#ed3337",
     aqua          = "#00e5ff",
     white         = "#fbf1c7",
 }
@@ -217,7 +217,7 @@ local ansi = {
     "#7cff00",
     "#ffd400",
     "#3fd9ff",
-    "#b76bff",
+    "#ed3337",
     "#00e5ff",
     "#ddc7a1",
 }

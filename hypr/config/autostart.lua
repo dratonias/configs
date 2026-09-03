@@ -28,6 +28,11 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("hyprctl dispatch workspace 4 && uwsm app -- vivaldi-stable")
     end
 
+    if is_laptop then
+        -- Sensor Fusion Hub accelerometer does not respond on this model
+        -- (see amd-sfh-reload notes). Manual rotation: SUPER + R
+    end
+
     -- Force the session to start on workspace 1
     hl.exec_cmd("hyprctl dispatch workspace 1")
 end)

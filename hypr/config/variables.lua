@@ -3,8 +3,8 @@
 TERMINAL     = "alacritty"
 FILE_MANAGER = "dolphin"
 BROWSER      = "vivaldi"
-EDITOR       = "gnome-text-editor --new-window"
-CALCULATOR   = "gnome-calculator"
+CODE_EDITOR  = ""
+CALCULATOR   = ""
 
 -- Monitors
 -- Workspace numbering is pinned to a FIXED device list so that a transient
@@ -20,19 +20,46 @@ LAPTOP_OUTPUTS   = { "eDP-1" }
 DESKTOP_OUTPUTS  = { "DP-3", "DP-2", "HDMI-A-1" } -- left, middle, right
 
 local function detected_outputs()
+    -- Read DRM connector state from sysfs, not from the Hyprland IPC: when
+    -- the config is first evaluated at startup Hyprland has not enumerated
+    -- the outputs yet, so `hyprctl -j monitors` returns nothing and the
+    -- fallback below picks the wrong machine type. Querying hyprctl from
+    -- inside the config also deadlocks `hyprctl reload`.
     local names = {}
-    local handle = io.popen("hyprctl -j monitors 2>/dev/null")
+    local handle = io.popen("ls /sys/class/drm 2>/dev/null")
     if handle then
-        local json = handle:read("*a")
-        handle:close()
-        if json and #json > 0 then
-            for obj in json:gmatch("{(.-)}") do
-                local name = obj:match('"name"%s*:%s*"([^"]+)"')
-                if name then names[name] = true end
+        for entry in handle:lines() do
+            local name = entry:match("^card%d+%-(.+)$")
+            if name then
+                local f = io.open("/sys/class/drm/" .. entry .. "/status", "r")
+                if f then
+                    local status = f:read("*l")
+                    f:close()
+                    if status == "connected" then names[name] = true end
+                end
             end
         end
+        handle:close()
     end
     return names
+end
+
+-- Machine type used only when no known output is detected at all. Decided from
+-- the SMBIOS chassis type (immediately readable, no Hyprland dependency).
+local function is_laptop()
+    local f = io.open("/sys/class/dmi/id/chassis_type", "r")
+    if f then
+        local n = tonumber(f:read("*l"))
+        f:close()
+        if n then
+            -- portable/laptop nominal types: 8 portable, 9 laptop, 10 notebook,
+            -- 11 handheld, 12 docking, 13 all-in-one, 14 sub-notebook,
+            -- 21 convertible, 30 tablet, 31 convertible, 32 detachable
+            return n == 8 or n == 9 or n == 10 or n == 11 or n == 12 or n == 13
+                or n == 14 or n == 21 or n == 30 or n == 31 or n == 32
+        end
+    end
+    return false
 end
 
 local live = detected_outputs()
@@ -53,8 +80,8 @@ if MONITORS == nil then
     for name in pairs(live) do table.insert(MONITORS, name) end
     table.sort(MONITORS)
     if #MONITORS == 0 then
-        -- Nothing detected: default to the known desktop triple (this machine)
-        MONITORS = { "DP-3", "DP-2", "HDMI-A-1" }
+        -- Nothing detected: pick the machine type instead of assuming desktop.
+        MONITORS = is_laptop() and LAPTOP_OUTPUTS or DESKTOP_OUTPUTS
     end
 end
 
