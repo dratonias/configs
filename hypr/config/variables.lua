@@ -19,6 +19,26 @@ NUM_WPM = 3 -- Number of workspaces per monitor
 LAPTOP_OUTPUTS   = { "eDP-1" }
 DESKTOP_OUTPUTS  = { "DP-3", "DP-2", "HDMI-A-1" } -- left, middle, right
 
+-- Machine type decided from the SMBIOS chassis type (immediately readable, no
+-- Hyprland dependency). Exposed as a global so autostart.lua can share it.
+local function detect_laptop()
+    local f = io.open("/sys/class/dmi/id/chassis_type", "r")
+    if f then
+        local n = tonumber(f:read("*l"))
+        f:close()
+        if n then
+            -- portable/laptop nominal types: 8 portable, 9 laptop, 10 notebook,
+            -- 11 handheld, 12 docking, 13 all-in-one, 14 sub-notebook,
+            -- 21 convertible, 30 tablet, 31 convertible, 32 detachable
+            return n == 8 or n == 9 or n == 10 or n == 11 or n == 12 or n == 13
+                or n == 14 or n == 21 or n == 30 or n == 31 or n == 32
+        end
+    end
+    return false
+end
+
+IS_LAPTOP = detect_laptop()
+
 local function detected_outputs()
     -- Read DRM connector state from sysfs, not from the Hyprland IPC: when
     -- the config is first evaluated at startup Hyprland has not enumerated
@@ -43,26 +63,6 @@ local function detected_outputs()
     end
     return names
 end
-
--- Machine type decided from the SMBIOS chassis type (immediately readable, no
--- Hyprland dependency). Exposed as a global so autostart.lua can share it.
-local function detect_laptop()
-    local f = io.open("/sys/class/dmi/id/chassis_type", "r")
-    if f then
-        local n = tonumber(f:read("*l"))
-        f:close()
-        if n then
-            -- portable/laptop nominal types: 8 portable, 9 laptop, 10 notebook,
-            -- 11 handheld, 12 docking, 13 all-in-one, 14 sub-notebook,
-            -- 21 convertible, 30 tablet, 31 convertible, 32 detachable
-            return n == 8 or n == 9 or n == 10 or n == 11 or n == 12 or n == 13
-                or n == 14 or n == 21 or n == 30 or n == 31 or n == 32
-        end
-    end
-    return false
-end
-
-IS_LAPTOP = detect_laptop()
 
 local live = detected_outputs()
 

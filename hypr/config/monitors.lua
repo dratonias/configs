@@ -7,13 +7,8 @@
 -- Monitor wiki https://wiki.hypr.land/Configuring/Basics/Monitors/
 -- Auto-detects the machine: laptop panel (eDP-*) vs desktop triple.
 -- MONITORS is the connected-output list built in variables.lua.
-
-local is_laptop = false
-for _, name in ipairs(MONITORS) do
-    if name:find("eDP", 1, true) then is_laptop = true end
-end
-
-if is_laptop then
+-- IS_LAPTOP (variables.lua) decides which monitor layout to apply.
+if IS_LAPTOP then
     -- Laptop: internal panel, preferred mode, auto position
     hl.monitor({
         output   = "eDP-1",
