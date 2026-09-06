@@ -15,22 +15,24 @@ hl.on("hyprland.start", function ()
 
     if not is_laptop then
         -- Autostart apps
-        hl.exec_cmd("uwsm app -- /home/timo/.config/discord/app-1.0.155/Discord")
-        hl.exec_cmd("uwsm app -- /usr/bin/looking-glass-client")
+        hl.exec_cmd("uwsm app -- discord")
+        hl.exec_cmd("uwsm app -- looking-glass-client")
         hl.exec_cmd("uwsm app -- spotify-launcher")
         hl.exec_cmd("uwsm app -- waydroid show-full-ui")
         hl.exec_cmd("uwsm app -- /opt/KopiaUI/kopia-ui")
-        hl.exec_cmd("uwsm app -- coolercontrol")
-        hl.exec_cmd('uwsm app -- "/usr/bin/syncthingtray-qt6" qt-widgets-gui --single-instance --wait')
+        hl.exec_cmd('uwsm app -- syncthingtray-qt6')
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
+
+        -- Tray apps previously started via XDG autostart
+        hl.exec_cmd("uwsm app -- nm-applet")
+        hl.exec_cmd("uwsm app -- arch-update --tray")
+        hl.exec_cmd("uwsm app -- apollo")
 
         -- Launch Vivaldi on workspace 4 (subsequent windows follow focus)
         hl.exec_cmd("hyprctl dispatch workspace 4 && uwsm app -- vivaldi-stable")
-    end
 
-    if is_laptop then
-        -- Sensor Fusion Hub accelerometer does not respond on this model
-        -- (see amd-sfh-reload notes). Manual rotation: SUPER + R
+        -- CoolerControl last
+        hl.exec_cmd("uwsm app -- coolercontrol")
     end
 
     -- Force the session to start on workspace 1

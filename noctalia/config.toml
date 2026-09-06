@@ -168,6 +168,7 @@ show_vpn_label = true
 
 [widget.notifications]
 color = "tertiary"
+hide_when_no_unread = true
 
 [widget.privacy]
 active_color = "error"
