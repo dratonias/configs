@@ -8,12 +8,8 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("xhost +SI:localuser:root")
 
     -- Apps only auto-launch on the desktop; nothing on the laptop
-    local is_laptop = false
-    for _, name in ipairs(MONITORS) do
-        if name:find("eDP", 1, true) then is_laptop = true end
-    end
-
-    if not is_laptop then
+    -- (IS_LAPTOP is defined in variables.lua)
+    if not IS_LAPTOP then
         -- Autostart apps
         hl.exec_cmd("uwsm app -- discord")
         hl.exec_cmd("uwsm app -- looking-glass-client")

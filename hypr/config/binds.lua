@@ -162,3 +162,19 @@ hl.bind(mainMod .. " + A",          hl.dsp.exec_cmd(noctCall .. "session lock"))
 -- hl.bind(mainMod .. " + ",          hl.dsp.exec_cmd("hyprpicker -a -n"))
 -- hl.bind(mainMod .. " + ",          hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
 --hl.bind(mainMod .. " + ",         hl.dsp.exec_cmd(launchPrefix .. CODE_EDITOR)) prob c but keep for now
+
+------------------------------
+---- PASSTHROUGH KEYBINDS ----
+------------------------------
+-- SUPER + B toggles passthrough: Hyprland ignores its keybinds so they are
+-- forwarded to the focused window (e.g. a VM). SUPER + Escape exits.
+hl.define_submap("passthru", function()
+    hl.bind(mainMod .. " + Escape", function()
+        hl.dispatch(hl.dsp.submap("reset"))
+        hl.dispatch(hl.dsp.exec_cmd(noctCall .. "notification-show '⌨  passthrough off' ''"))
+    end)
+end)
+hl.bind(mainMod .. " + B", function()
+    hl.dispatch(hl.dsp.submap("passthru"))
+    hl.dispatch(hl.dsp.exec_cmd(noctCall .. "notification-show '⌨  PASSTHROUGH ACTIVE' 'SUPER+Esc to exit'"))
+end)

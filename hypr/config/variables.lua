@@ -44,9 +44,9 @@ local function detected_outputs()
     return names
 end
 
--- Machine type used only when no known output is detected at all. Decided from
--- the SMBIOS chassis type (immediately readable, no Hyprland dependency).
-local function is_laptop()
+-- Machine type decided from the SMBIOS chassis type (immediately readable, no
+-- Hyprland dependency). Exposed as a global so autostart.lua can share it.
+local function detect_laptop()
     local f = io.open("/sys/class/dmi/id/chassis_type", "r")
     if f then
         local n = tonumber(f:read("*l"))
@@ -61,6 +61,8 @@ local function is_laptop()
     end
     return false
 end
+
+IS_LAPTOP = detect_laptop()
 
 local live = detected_outputs()
 
@@ -81,7 +83,7 @@ if MONITORS == nil then
     table.sort(MONITORS)
     if #MONITORS == 0 then
         -- Nothing detected: pick the machine type instead of assuming desktop.
-        MONITORS = is_laptop() and LAPTOP_OUTPUTS or DESKTOP_OUTPUTS
+        MONITORS = IS_LAPTOP and LAPTOP_OUTPUTS or DESKTOP_OUTPUTS
     end
 end
 
