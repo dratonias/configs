@@ -261,7 +261,16 @@ sound_volume = 0.25
 notification_sound = ""
 
 [notification]
-filter_order = [ "default" ]
+filter_order = [ "whatsapp", "default" ]
+
+# WhatsApp notifications stay in history, everything else same as default.
+[notification.filter.whatsapp]
+enabled = true
+match = "whatsapp"
+show_toast = true
+save_history = true
+play_sound = true
+allow_permanent = false
 
 # Every notification is a short-lived toast with sound, never kept in history
 # or allowed to become resident. Future app-specific filters must be placed
