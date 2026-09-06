@@ -53,7 +53,8 @@ hl.window_rule({ match = { class = "^(vesktop)$" }, monitor = PRIMARY_MONITOR })
 -- Startup apps (launched via XDG autostart .desktop files)
 hl.window_rule({ match = { class = "^(looking-glass-client)$" },    workspace = "3" })
 hl.window_rule({ match = { class = "^([Ww]aydroid)$" },              workspace = "9", fullscreen = true })
-hl.window_rule({ match = { class = "^(discord)$" },      workspace = "7" })
+
+hl.window_rule({ match = { class = "^(discord)$" }, workspace = "7" })
 hl.window_rule({ match = { class = "^(Spotify|spotify)$" }, workspace = "7" })
 
 -- Opacity Overrides

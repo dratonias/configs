@@ -30,6 +30,10 @@ if command -v systemctl >/dev/null && systemctl --user show-environment >/dev/nu
     done < <(grep -hE '^[A-Za-z_][A-Za-z0-9_]*=' "$DIR"/environment.d/*.conf 2>/dev/null)
     systemctl --user show-environment | grep -qF "$(grep -hE '^' "$DIR"/environment.d/*.conf | head -1 | cut -d= -f1)" \
         && echo "applied environment.d vars to running session" || true
+
+    # Hyprland uses config/autostart.lua for workspace-aware application startup.
+    systemctl --user mask wayland-session-xdg-autostart@hyprland.desktop.target \
+        && echo "disabled XDG autostart for Hyprland"
 fi
 
 hyprctl reload >/dev/null 2>&1 && echo "hyprland reloaded" || echo "hyprland not running (skip reload)"
