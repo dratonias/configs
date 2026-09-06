@@ -115,7 +115,7 @@ hl.bind(mainMod .. " + E",          hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER
 hl.bind("XF86Calculator",           hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
 hl.bind(mainMod .. " + R",          hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
 hl.bind(mainMod .. " + X",          hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
---hl.bind(mainMod .. " + SHIFT + X",  TODO:boot into windows here)
+hl.bind(mainMod .. " + SHIFT + X",  hl.dsp.exec_cmd("/home/timo/Desktop/windows.sh"))
 
 -- 2-in-1: cycle the panel orientation 90 deg clockwise (the accelerometer
 -- does not respond on this model, so rotation is manual)
