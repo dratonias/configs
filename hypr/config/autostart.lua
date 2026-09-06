@@ -20,6 +20,7 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd('uwsm app -- syncthingtray-qt6 --wait')
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
         hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- arch-update --tray")
+        hl.exec_cmd("uwsm app -- twitch-notify")
         hl.exec_cmd("uwsm app -- apollo")
         hl.exec_cmd("uwsm app -- coolercontrol")
 
@@ -28,7 +29,7 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("uwsm app -- looking-glass-client", { workspace = "3 silent" })
         hl.exec_cmd("uwsm app -- vivaldi-stable", { workspace = "4 silent" })
         hl.exec_cmd([[uwsm app -- discord & while ! hyprctl clients -j | jq -e '.[] | select(.class == "discord")' >/dev/null; do sleep 0.1; done; uwsm app -- spotify-launcher &]], { workspace = "7 silent" })
-        hl.exec_cmd([[while ! hyprctl clients -j | jq -e '.[] | select(.class == "Spotify")' >/dev/null; do sleep 0.1; done; hyprctl eval 'hl.dispatch(hl.dsp.focus({ window = "class:Spotify" })); hl.dispatch(hl.dsp.layout("splitratio 0.356")); hl.dispatch(hl.dsp.focus({ workspace = 1 }))']])
+        hl.exec_cmd([[while ! hyprctl clients -j | jq -e '.[] | select(.class == "Spotify")' >/dev/null; do sleep 0.1; done; hyprctl eval 'hl.dispatch(hl.dsp.focus({ window = "class:Spotify" })); hl.dispatch(hl.dsp.window.swap({ direction = "down" })); hl.dispatch(hl.dsp.focus({ window = "class:Spotify" })); hl.dispatch(hl.dsp.layout("splitratio 0.356")); hl.dispatch(hl.dsp.focus({ workspace = 1 }))']])
 
     end
 
