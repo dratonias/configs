@@ -50,13 +50,6 @@ hl.window_rule({ match = { class = "^(.*\\.exe)$", float = true }, monitor = PRI
 hl.window_rule({ match = { class = "^(.*[Ll]auncher.*)$" }, float = true, monitor = PRIMARY_MONITOR })
 hl.window_rule({ match = { class = "^(vesktop)$" }, monitor = PRIMARY_MONITOR })
 
--- Startup apps (launched via XDG autostart .desktop files)
-hl.window_rule({ match = { class = "^(looking-glass-client)$" },    workspace = "3" })
-hl.window_rule({ match = { class = "^([Ww]aydroid)$" },              workspace = "9", fullscreen = true })
-
-hl.window_rule({ match = { class = "^(discord)$" }, workspace = "7" })
-hl.window_rule({ match = { class = "^(Spotify|spotify)$" }, workspace = "7" })
-
 -- Opacity Overrides
 local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
 
@@ -103,4 +96,15 @@ hl.window_rule({
         pin        = false,
     },
     no_focus = true,
+})
+
+-- Unity engine fixes (x11 app): drop the generic center-on-float rule so dropdown menus spawn where they're told
+hl.window_rule({ match = { class = "^(Unity|Unityhub-unity-editor.*)$", float = true }, center = false })
+
+-- Fix waydroid stealing focus
+hl.window_rule({
+    name = "waydroid-no-steal",
+    match = { class = "Waydroid" },  -- verify with hyprctl clients, see below
+    no_initial_focus = true,
+    workspace = "9 silent",
 })
