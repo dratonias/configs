@@ -103,6 +103,17 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("uwsm app -- discord", { workspace = "7 silent" })
         hl.exec_cmd("uwsm app -- spotify-launcher", { workspace = "7 silent" })
 
+        -- Discord sometimes spawns a short-lived updater window that consumes the
+        -- workspace assignment before the real window appears. One-shot timer to
+        -- catch it if it landed on ws 1 instead of 7.
+        hl.timer(function()
+            for _, w in ipairs(hl.get_workspace_windows(1)) do
+                if w.class == "discord" and w.mapped then
+                    hl.dispatch(hl.dsp.movement("workspace", "7"))
+                    break
+                end
+            end
+        end, { timeout = 30, type = "once" })
     end
 
     -- Startup windows are created asynchronously, so focus ws 1 after them.
