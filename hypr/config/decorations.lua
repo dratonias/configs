@@ -7,5 +7,6 @@ hl.config({
         border_size = 2,
         extend_border_grab_area = 10,
         resize_on_border = true,
+        allow_tearing = true,
     },
 })
