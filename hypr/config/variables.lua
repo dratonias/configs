@@ -6,6 +6,9 @@ BROWSER      = "vivaldi"
 CODE_EDITOR  = ""
 CALCULATOR   = ""
 
+-- Named workspaces (single source of truth, shared across config files)
+GAMING_WORKSPACE = "name:G"
+
 -- Monitors
 -- Workspace numbering is pinned to a FIXED device list so that a transient
 -- or phantom output (e.g. an HDMI/DP connector briefly hotplugging, a Looking

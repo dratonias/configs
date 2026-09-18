@@ -97,8 +97,8 @@ for i = 1, 10 do
 end
 
 -- Named G(aming) workspace
-hl.bind(mainMod .. " + udiaeresis",  hl.dsp.focus({ workspace = "name:G" }))
-hl.bind(mainMod .. " + adiaeresis",  hl.dsp.window.move({ workspace = "name:G" }))
+hl.bind(mainMod .. " + odiaeresis", hl.dsp.focus({ workspace = GAMING_WORKSPACE }))
+hl.bind(mainMod .. " + SHIFT + odiaeresis", hl.dsp.window.move({ workspace = GAMING_WORKSPACE }))
 
 -- Scroll through existing workspaces & monitors
 hl.bind(mainMod .. " + mouse_down",           hl.dsp.focus({ workspace = "m-1" }))
@@ -147,7 +147,7 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"),
 
 -- Screen Capture
 hl.bind(mainMod .. " + S",          hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
-hl.bind(mainMod .. " + SHIFT+ S",   hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
+hl.bind(mainMod .. " + SHIFT + S",   hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
 
 -- Theming and Wallpaper
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"))

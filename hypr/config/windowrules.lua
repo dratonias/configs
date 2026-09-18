@@ -14,13 +14,15 @@ hl.window_rule({
 
 -- Gaming
 local gamingApps = "^(steam_app.*|gamescope)$"
-local gamingWorkspace = "name:gaming"
+-- Battle.net runs as a Steam shortcut (class steam_app_default, content "game"),
+-- so it matches the gaming rules; only the games it spawns belong on G.
+local bn = "^(Battle.net.*)$"
 
-hl.window_rule({ match = { content = "game" }, workspace = gamingWorkspace, immediate = true })
-hl.window_rule({ match = { xdg_tag = "^(.*game.*)$" }, workspace = gamingWorkspace, fullscreen_state = 2, content = "game", sync_fullscreen = true, immediate = true })
-hl.window_rule({ match = { class = gamingApps }, workspace = gamingWorkspace, immediate = true })
+hl.window_rule({ match = { content = "game", initial_title = "negative:" .. bn }, workspace = GAMING_WORKSPACE, immediate = true })
+hl.window_rule({ match = { xdg_tag = "^(.*game.*)$" }, workspace = GAMING_WORKSPACE, fullscreen_state = 2, content = "game", sync_fullscreen = true, immediate = true })
+hl.window_rule({ match = { class = gamingApps, initial_title = "negative:" .. bn }, workspace = GAMING_WORKSPACE, immediate = true })
 hl.window_rule({ match = { class = "^(steam)$", title = "^(Friends List)$" }, float = true })
-hl.window_rule({ match = { class = "^(steam)$", title = "^(Launching\\.{3})$" }, float = true, center = true, workspace = gamingWorkspace })
+hl.window_rule({ match = { class = "^(steam)$", title = "^(Launching\\.{3})$" }, float = true, center = true, workspace = GAMING_WORKSPACE })
 hl.window_rule({
     match = {
         class         = gamingApps,
@@ -42,7 +44,18 @@ hl.window_rule({
     float            = true,
     fullscreen       = false,
     fullscreen_state = 0,
-    workspace        = gamingWorkspace,
+    workspace        = GAMING_WORKSPACE,
+})
+
+-- Battle.net launcher: excluded from G by the two workspace rules above; this
+-- only undoes the immersive gaming treatment (fullscreen_state 2, borderless,
+-- monitor-size) meant for actual games.
+hl.window_rule({
+    match = { initial_title = bn },
+    decorate         = true,
+    fullscreen_state = 0,
+    sync_fullscreen  = false,
+    immediate        = true,
 })
 
 -- Apps

@@ -49,6 +49,13 @@ launch_apps_as_systemd_services = true
 polkit_agent = true
 settings_show_advanced = true
 
+    [shell.launcher.dmenu.entry.raddbg]
+    command = "printf 'raddbg\\n'"
+    exec = "/home/timo/Sync/Repos/Other/RAD_Debugger/build/raddbg"
+    prefix = ""
+    glyph = "bug"
+    global = true
+
     [shell.animation]
     speed = 4.0
 
