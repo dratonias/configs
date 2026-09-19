@@ -12,7 +12,7 @@ GAMING_WORKSPACE = "name:G"
 -- Monitors
 -- Workspace numbering is pinned to a FIXED device list so that a transient
 -- or phantom output (e.g. an HDMI/DP connector briefly hotplugging, a Looking
--- Glass / waydroid virtual output) can never renumber workspaces upward.
+-- Glass virtual output) can never renumber workspaces upward.
 -- Known outputs are hardcoded and matched against the live monitor set; the
 -- live count is only used as a fallback if none of the known names are seen.
 NUM_WPM = 3 -- Number of workspaces per monitor

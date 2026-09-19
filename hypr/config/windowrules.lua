@@ -63,6 +63,10 @@ hl.window_rule({ match = { class = "^(.*\\.exe)$", float = true }, monitor = PRI
 hl.window_rule({ match = { class = "^(.*[Ll]auncher.*)$" }, float = true, monitor = PRIMARY_MONITOR })
 hl.window_rule({ match = { class = "^(vesktop)$" }, monitor = PRIMARY_MONITOR })
 
+-- Discord: Electron forks its window process, so exec-rule/workspace placement
+-- from autostart never sticks. A map-time class rule reliably lands it on ws 7.
+hl.window_rule({ match = { class = "^(discord)$" }, workspace = "7 silent" })
+
 -- Opacity Overrides
 local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
 
@@ -113,11 +117,3 @@ hl.window_rule({
 
 -- Unity engine fixes (x11 app): drop the generic center-on-float rule so dropdown menus spawn where they're told
 hl.window_rule({ match = { class = "^(Unity|Unityhub-unity-editor.*)$", float = true }, center = false })
-
--- Fix waydroid stealing focus
-hl.window_rule({
-    name = "waydroid-no-steal",
-    match = { class = "Waydroid" },  -- verify with hyprctl clients, see below
-    no_initial_focus = true,
-    workspace = "9 silent",
-})
