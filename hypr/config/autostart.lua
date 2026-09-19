@@ -89,7 +89,10 @@ hl.on("hyprland.start", function ()
     -- (IS_LAPTOP is defined in variables.lua)
     if not IS_LAPTOP then
         -- Background / tray apps
-        hl.exec_cmd("uwsm app -- /opt/KopiaUI/kopia-ui")
+        -- kopia-ui (Electron) registers its tray StatusNotifierItem only once at
+        -- startup; if the watcher isn't up yet the icon silently never appears.
+        -- Wait for the watcher like arch-update --tray does below.
+        hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- /opt/KopiaUI/kopia-ui")
         hl.exec_cmd('uwsm app -- syncthingtray-qt6 --wait')
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
         hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- arch-update --tray")
