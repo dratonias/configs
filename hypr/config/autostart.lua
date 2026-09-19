@@ -97,7 +97,7 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("uwsm app -- coolercontrol")
 
         -- Gui apps
-        hl.exec_cmd("uwsm app -- waydroid show-full-ui", { workspace = "9 silent" })
+        hl.exec_cmd("uwsm app -- zapzap", { workspace = "9 silent" })
         hl.exec_cmd("uwsm app -- looking-glass-client", { workspace = "3 silent" })
         hl.exec_cmd("uwsm app -- vivaldi-stable", { workspace = "4 silent" })
         hl.exec_cmd("uwsm app -- discord", { workspace = "7 silent" })
