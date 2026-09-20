@@ -85,13 +85,8 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("plymouth quit")
     hl.exec_cmd("xhost +SI:localuser:root")
 
-    -- Apps only auto-launch on the desktop; nothing on the laptop
-    -- (IS_LAPTOP is defined in variables.lua)
     if not IS_LAPTOP then
         -- Background / tray apps
-        -- kopia-ui (Electron) registers its tray StatusNotifierItem only once at
-        -- startup; if the watcher isn't up yet the icon silently never appears.
-        -- Wait for the watcher like arch-update --tray does below.
         hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- /opt/KopiaUI/kopia-ui")
         hl.exec_cmd('uwsm app -- syncthingtray-qt6 --wait')
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
@@ -100,7 +95,7 @@ hl.on("hyprland.start", function ()
         hl.exec_cmd("uwsm app -- coolercontrol")
 
         -- Gui apps
-        hl.exec_cmd("uwsm app -- zapzap", { workspace = "9 silent" })
+        hl.exec_cmd("uwsm app -- com.rtosta.zapzap.desktop", { workspace = "9 silent" })
         hl.exec_cmd("uwsm app -- looking-glass-client", { workspace = "3 silent" })
         hl.exec_cmd("uwsm app -- vivaldi-stable", { workspace = "4 silent" })
         hl.exec_cmd("uwsm app -- discord")
