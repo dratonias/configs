@@ -38,7 +38,7 @@ thickness = 36
     padding = 0.0
 
 [plugins]
-enabled = [ "dratonias/ai-usagebar", "noctalia/bitwarden", "dratonias/btbattery", "dratonias/sysgrid", "dratonias/netpanel" ]
+enabled = [ "noctalia/bitwarden", "dratonias/btbattery", "dratonias/sysgrid", "dratonias/netpanel" ]
 
 [shell]
 clipboard_image_action_command = "satty -f -"
@@ -131,12 +131,6 @@ wallpaper_scheme = "muted"
         [theme.templates.user.nvim]
         input_path = "$XDG_CONFIG_HOME/noctalia/templates/nvim.lua"
         output_path = "$XDG_CONFIG_HOME/nvim/colors/gruvbox-neon.lua"
-
-[widget.bar]
-color_by_usage = false
-extras = "none"
-visualization = "gauge"
-type = "dratonias/ai-usagebar:bar"
 
 [widget.bluetooth]
 color = "secondary"
