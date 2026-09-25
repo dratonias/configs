@@ -262,12 +262,22 @@ sound_volume = 0.25
 notification_sound = ""
 
 [notification]
-filter_order = [ "whatsapp", "default" ]
+filter_order = [ "whatsapp", "kopia", "default" ]
 
 # WhatsApp notifications stay in history, everything else same as default.
 [notification.filter.whatsapp]
 enabled = true
 match = "whatsapp"
+show_toast = true
+save_history = true
+play_sound = true
+allow_permanent = false
+
+# Kopia backup notifications (KopiaUI) get the same treatment as WhatsApp:
+# toast on completion and kept in history for later review.
+[notification.filter.kopia]
+enabled = true
+match = "kopia"
 show_toast = true
 save_history = true
 play_sound = true
