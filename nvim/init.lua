@@ -258,6 +258,9 @@ vim.keymap.set('n', 's', '<Plug>(nvim-surround-normal)', { desc = 'Surround add'
 vim.keymap.set('n', 'ss', '<Plug>(nvim-surround-normal-cur)', { desc = 'Surround current line' })
 vim.keymap.set('x', 's', '<Plug>(nvim-surround-visual)', { desc = 'Surround add (visual)' })
 
+-- [[ Block hints: virtual text at closing braces showing the block header ]]
+require('block-hints').setup {}
+
 -- [[ Treesitter ]]
 vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
@@ -266,6 +269,7 @@ require('nvim-treesitter').install { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc
 local function treesitter_try_attach(buf, language)
   if not vim.treesitter.language.add(language) then return end
   vim.treesitter.start(buf, language)
+  pcall(require('block-hints').attach, buf)
   if vim.treesitter.query.get(language, 'indents') ~= nil then
     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end
