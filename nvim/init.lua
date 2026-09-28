@@ -57,6 +57,29 @@ vim.diagnostic.config {
   virtual_text = false,
 }
 
+-- Diagnostics revealed by ö/Ö (see LspAttach) show their message as a virtual
+-- line under the cursor line, the rest of the diagnostics stay underlined. The
+-- plain rendering is restored when insert mode is entered again.
+---@param diagnostic vim.Diagnostic?
+---@param bufnr integer
+local function reveal_diagnostic(diagnostic, bufnr)
+  if not diagnostic then return end
+  vim.b[bufnr].diagnostic_revealed = true
+  -- nil diagnostics = re-render everything this namespace has, only the message
+  -- becomes a virtual line (and only for the line the cursor is on)
+  vim.diagnostic.show(diagnostic.namespace, bufnr, nil, { virtual_lines = { current_line = true } })
+end
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+  desc = 'Restore diagnostics revealed by a diagnostic jump',
+  callback = function(event)
+    if not vim.b[event.buf].diagnostic_revealed then return end
+    vim.b[event.buf].diagnostic_revealed = false
+    -- update_in_insert is forced, otherwise the re-render waits for InsertLeave
+    vim.diagnostic.show(nil, event.buf, nil, { update_in_insert = true })
+  end,
+})
+
 -- ============================================================
 -- 2. Keymaps
 -- ============================================================
@@ -351,8 +374,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
     map('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
     map('<leader>e', vim.diagnostic.open_float, 'Show diagnostic')
-    map('ö', function() vim.diagnostic.jump { count = 1 } end, 'Next diagnostic')
-    map('ä', function() vim.diagnostic.jump { count = -1 } end, 'Previous diagnostic')
+    -- vim.diagnostic.jump() does not open a float by default; on_jump is the
+    -- non-deprecated way to change what happens on a jump (see reveal_diagnostic)
+    map('ö', function() vim.diagnostic.jump { count = 1, on_jump = reveal_diagnostic } end, 'Next diagnostic')
+    map('Ö', function() vim.diagnostic.jump { count = -1, on_jump = reveal_diagnostic } end, 'Previous diagnostic')
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method('textDocument/inlayHint', event.buf) then

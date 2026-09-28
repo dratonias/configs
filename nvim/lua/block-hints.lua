@@ -1,12 +1,19 @@
 -- block-hints.lua
 --
--- Always-on virtual text at closing braces. Shows the header of the block
--- (if/for/while/switch/function, else/catch/finally) at the line of its
--- closing brace, so you never have to scroll up to see what a `}` belongs to:
+-- Virtual text at closing braces showing the block header (if/for/while/switch/
+-- function, else/catch/finally), so you never have to scroll up to see what a
+-- `}` belongs to:
 --
 --   if (a && b) {
 --       ...
 --   } if (a && b)      <- virtual text
+--
+-- Only the block the cursor is in (the innermost one) is annotated, and the
+-- hint follows the cursor, so a file is never covered in headers:
+--
+--   if (a && b) {          <- cursor here
+--       ...
+--   } if (a && b)         <- the only annotated brace
 --
 -- Treesitter-based: the header text is taken from the *statement start* to the
 -- block start, so brace style (same line / Allman) and multi-line conditions
@@ -97,30 +104,39 @@ local function visit(bufnr, types, node, out, budget)
   if budget.n <= 0 then return end
   budget.n = budget.n - 1
 
+  -- Only the block the cursor is in is annotated, so a node that doesn't span
+  -- the cursor row can't hold that block: its whole subtree is skipped.
+  local nrow = node:end_()
+  if nrow < out.cursor then return end
+  local srow = node:start()
+  if srow > out.cursor then return end
+
   local t = node:type()
-  if not node:has_error() then
-    if is_block(t) then
-      local parent = node:parent()
-      if parent then
-        local pt = parent:type()
-        local sr, sc = parent:start()
-        local er, ec = node:start()
-        local hdr
-        if types[pt] then
-          -- JS/TS arrow bodies: widen to the declarator so header reads
-          -- `h = () =>` instead of just `() =>`.
-          if pt == 'arrow_function' then
-            local grand = parent:parent()
-            if grand and grand:type() == 'variable_declarator' then
-              sr, sc = grand:start()
-            end
+  -- is_block/has_error are ordered cheapest-first: has_error() walks the subtree.
+  if is_block(t) and not node:has_error() then
+    local parent = node:parent()
+    if parent then
+      local pt = parent:type()
+      local sr, sc = parent:start()
+      local er, ec = node:start()
+      local hdr
+      if types[pt] then
+        -- JS/TS arrow bodies: widen to the declarator so header reads
+        -- `h = () =>` instead of just `() =>`.
+        if pt == 'arrow_function' then
+          local grand = parent:parent()
+          if grand and grand:type() == 'variable_declarator' then
+            sr, sc = grand:start()
           end
-          hdr = header_for(bufnr, sr, sc, er, ec)
-        elseif WRAPPERS[pt] then
-          hdr = header_for(bufnr, sr, sc, er, ec)
         end
-        local erow = node:end_()
-        if hdr then out[#out + 1] = { row = erow, text = truncate(hdr, M.opts.max_len) } end
+        hdr = header_for(bufnr, sr, sc, er, ec)
+      elseif WRAPPERS[pt] then
+        hdr = header_for(bufnr, sr, sc, er, ec)
+      end
+      -- Innermost block wins: all enclosing blocks contain the cursor row too,
+      -- the deepest one is the one starting last.
+      if hdr and (not out.start or srow > out.start) then
+        out.start, out.row, out.text = srow, nrow, truncate(hdr, M.opts.max_len)
       end
     end
   end
@@ -128,6 +144,19 @@ local function visit(bufnr, types, node, out, budget)
   for child in node:iter_children() do
     visit(bufnr, types, child, out, budget)
   end
+end
+
+-- Row (0-based) the cursor sits on, or nil when the buffer isn't shown in any
+-- window — refresh is deferred, so the window it was scheduled from may be gone.
+local function cursor_row(bufnr)
+  local win = vim.api.nvim_get_current_win()
+  if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == bufnr then
+    return vim.api.nvim_win_get_cursor(win)[1] - 1
+  end
+  for _, w in ipairs(vim.fn.win_findbuf(bufnr)) do
+    if vim.api.nvim_win_is_valid(w) then return vim.api.nvim_win_get_cursor(w)[1] - 1 end
+  end
+  return nil
 end
 
 local function refresh(bufnr)
@@ -143,6 +172,9 @@ local function refresh(bufnr)
   local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
   if not ok or not parser then return end
 
+  local row = cursor_row(bufnr)
+  if not row then return end
+
   vim.api.nvim_buf_clear_namespace(bufnr, M.namespace, 0, -1)
   local roots = parser:parse()
   if not roots[1] then return end
@@ -152,11 +184,9 @@ local function refresh(bufnr)
     typeset[t] = true
   end
 
-  local out = {}
+  local out = { cursor = row }
   visit(bufnr, typeset, roots[1]:root(), out, { n = 20000 })
-  for _, e in ipairs(out) do
-    put(bufnr, e.row, e.text)
-  end
+  if out.text then put(bufnr, out.row, out.text) end
 end
 
 -- Debounce: only the latest scheduled refresh for a buffer runs.
@@ -193,10 +223,11 @@ function M.setup(opts)
   vim.api.nvim_set_hl(0, 'BlockHints', { link = M.opts.highlight })
   vim.keymap.set('n', '<leader>tb', M.toggle, { desc = '[T]oggle [B]lock hints' })
 
-  vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
+  vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI', 'CursorMoved', 'CursorMovedI' }, {
     group = vim.api.nvim_create_augroup('block-hints', { clear = true }),
-    desc = 'Refresh block hints after edits',
+    desc = 'Refresh block hints after edits and cursor moves',
     callback = function(ev)
+      if vim.api.nvim_get_current_buf() ~= ev.buf then return end
       if vim.bo[ev.buf].buftype == '' then schedule_refresh(ev.buf) end
     end,
   })
