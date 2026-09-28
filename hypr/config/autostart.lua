@@ -88,7 +88,7 @@ hl.on("hyprland.start", function ()
     if not IS_LAPTOP then
         -- Background / tray apps
         hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- /opt/KopiaUI/kopia-ui")
-        hl.exec_cmd('uwsm app -- syncthingtray-qt6 --wait')
+        hl.exec_cmd("uwsm app -- syncthingtray")
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
         hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- arch-update --tray")
         hl.exec_cmd("uwsm app -- /home/timo/.local/bin/twitch-notify")
