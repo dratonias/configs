@@ -262,49 +262,42 @@ sound_volume = 0.25
 notification_sound = ""
 
 [notification]
-filter_order = [ "whatsapp", "kopia", "default" ]
+filter_order = [ "whatsapp", "zapzap", "kopia", "discord", "default" ]
 
-# WhatsApp notifications stay in history, everything else same as default.
+# Per-app filters only need `match` + `allow_permanent`: show_toast, play_sound
+# and save_history all default to true, allow_permanent defaults to true too
+# (resident toasts), so it is the one flag that must be set here.
+# `match` takes a single token, so every app needs its own filter, and it must
+# be listed before "default" in filter_order.
+
+# Official WhatsApp client (not installed here — ZapZap below is what's used).
 [notification.filter.whatsapp]
-enabled = true
 match = "whatsapp"
-show_toast = true
-save_history = true
-play_sound = true
 allow_permanent = false
 
-# Kopia backup notifications (KopiaUI) get the same treatment as WhatsApp:
-# toast on completion and kept in history for later review.
+# ZapZap (flatpak com.rtosta.zapzap) reports app_name "ZapZap", so the
+# "whatsapp" filter above never matches it.
+[notification.filter.zapzap]
+match = "zapzap"
+allow_permanent = false
+
+# Kopia backups (KopiaUI / kopia-ui), kept for later review.
 [notification.filter.kopia]
-enabled = true
 match = "kopia"
-show_toast = true
-save_history = true
-play_sound = true
 allow_permanent = false
 
-# Every notification is a short-lived toast with sound, never kept in history
-# or allowed to become resident. Future app-specific filters must be placed
-# before "default" in filter_order to override these settings.
+[notification.filter.discord]
+match = "discord"
+allow_permanent = false
+
+# Everything else: short-lived toast with sound, never kept in history and never
+# allowed to become resident. This is the only filter that overrides the defaults.
 [notification.filter.default]
 enabled = true
 # `match` only supports literal app/category tokens; this regex covers every body.
 match_content = ".*"
-show_toast = true
 save_history = false
-play_sound = true
 allow_permanent = false
-
-# Example retained/resident rule:
-# [notification]
-# filter_order = [ "discord", "default" ]
-# [notification.filter.discord]
-# enabled = true
-# match = "discord"
-# show_toast = true
-# save_history = true
-# play_sound = true
-# allow_permanent = true
 
 [osd.kinds]
 media = false
