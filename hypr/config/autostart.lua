@@ -6,6 +6,13 @@
 -- (see workspaces.lua, NUM_WPM = 3):
 --   main/DP-2: ws 1-3 | left/DP-3: ws 4-6 | right/HDMI-A-1: ws 7-9
 
+local launchPrefix = "uwsm app -- " -- if you are not using UWSM, make this empty (e.g. "")
+
+-- Noctalia owns the tray (org.kde.StatusNotifierWatcher) and registers it a beat
+-- after these lines fire. A tray app that starts before that shows a "system tray
+-- is (currently) not available" error and exits, so make it wait for the watcher.
+local trayLaunchPrefix = "gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && " .. launchPrefix
+
 if not IS_LAPTOP then
     local function find_media_windows()
         local discord, spotify
@@ -87,19 +94,19 @@ hl.on("hyprland.start", function ()
 
     if not IS_LAPTOP then
         -- Background / tray apps
-        hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- /opt/KopiaUI/kopia-ui")
-        hl.exec_cmd("uwsm app -- syncthingtray")
+        hl.exec_cmd(trayLaunchPrefix .. "/opt/KopiaUI/kopia-ui")
+        hl.exec_cmd(trayLaunchPrefix .. "syncthingtray")
         hl.exec_cmd("/home/timo/Sync/Repos/Mine/Scripts/linux/connect_headphones.sh")
-        hl.exec_cmd("gdbus wait --session --timeout 120 org.kde.StatusNotifierWatcher && uwsm app -- arch-update --tray")
-        hl.exec_cmd("uwsm app -- /home/timo/.local/bin/twitch-notify")
-        hl.exec_cmd("uwsm app -- coolercontrol")
+        hl.exec_cmd(trayLaunchPrefix .. "arch-update --tray")
+        hl.exec_cmd(launchPrefix .. "/home/timo/.local/bin/twitch-notify")
+        hl.exec_cmd(launchPrefix .. "coolercontrol")
 
         -- Gui apps
-        hl.exec_cmd("uwsm app -- com.rtosta.zapzap.desktop", { workspace = "9 silent" })
-        hl.exec_cmd("uwsm app -- looking-glass-client", { workspace = "3 silent" })
-        hl.exec_cmd("uwsm app -- vivaldi-stable", { workspace = "4 silent" })
-        hl.exec_cmd("uwsm app -- discord")
-        hl.exec_cmd("uwsm app -- spotify-launcher", { workspace = "7 silent" })
+        hl.exec_cmd(launchPrefix .. "com.rtosta.zapzap.desktop", { workspace = "9 silent" })
+        hl.exec_cmd(launchPrefix .. "looking-glass-client", { workspace = "3 silent" })
+        hl.exec_cmd(launchPrefix .. "vivaldi-stable", { workspace = "4 silent" })
+        hl.exec_cmd(launchPrefix .. "discord")
+        hl.exec_cmd(launchPrefix .. "spotify-launcher", { workspace = "7 silent" })
     end
 
     -- Startup windows are created asynchronously, so focus ws 1 after them.
