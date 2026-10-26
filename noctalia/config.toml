@@ -21,7 +21,7 @@ thickness = 36
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g1"
     members = [ "session" ]
     opacity = 0.0
@@ -31,7 +31,7 @@ thickness = 36
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g2"
     members = [ "tray", "privacy", "notifications", "bluetooth", "netpanel", "volume", "battery" ]
     opacity = 0.0
@@ -143,7 +143,7 @@ poll_minutes = 1
 [widget.btsep]
 type = "text"
 text = "⫻"
-color = "outline"
+color = "outline_variant"
 
 [widget.netpanel]
 type = "dratonias/netpanel:bar"
@@ -156,7 +156,7 @@ tooltip_format = "{:%H:%M:%S · %A, %d.%m.%Y}"
 vertical_format = "{:%H %M}\\n──\\n{:%d %m}"
 
 [widget.launcher]
-color = "outline"
+color = "outline_variant"
 
 [widget.media]
 hide_when_no_media = true
@@ -264,8 +264,6 @@ style = "minimal"
 [audio]
 enable_sounds = true
 sound_volume = 0.25
-# Empty uses Noctalia's bundled notification.wav.
-notification_sound = ""
 
 [notification]
 filter_order = [ "whatsapp", "zapzap", "kopia", "discord", "default" ]
