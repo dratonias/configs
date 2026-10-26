@@ -67,6 +67,36 @@ hl.window_rule({ match = { class = "^(vesktop)$" }, monitor = PRIMARY_MONITOR })
 -- from autostart never sticks. A map-time class rule reliably lands it on ws 7.
 hl.window_rule({ match = { class = "^(discord)$" }, workspace = "7 silent" })
 
+-- Zoom: XWayland (class "zoom"). Besides the main window it opens a crowd of
+-- transparent helper surfaces - audio device chooser, sharing toolbar/preview,
+-- notification toasts. Tiling those leaves oversized empty rectangles, and
+-- compositor blur/shadows fill their see-through margins, so the helpers
+-- float, the main window keeps tiling, and floats get no decoration at all.
+local zoom = "^(zoom)$"
+
+hl.window_rule({ name = "zoom-helper-windows", match = { class = zoom }, float = true, no_blur = true, no_shadow = true })
+hl.window_rule({ name = "zoom-main-windows", match = { class = zoom, initial_title = "^(Zoom Workplace)$" }, tile = true })
+
+-- Zoom's popups get unmapped the moment they lose focus, so they vanish right
+-- under the cursor when you move the mouse towards them.
+for _, popup in ipairs({ "menu window", "confirm window" }) do
+    hl.window_rule({ match = { class = zoom, title = "^(" .. popup .. ")$" }, stay_focused = true })
+end
+
+-- Pre-meeting audio/video preview opens at 638x152 despite its 638x510 size
+-- hints, which clips the mic/camera/speaker controls.
+hl.window_rule({
+    match    = { class = zoom, title = "^.+'s Zoom Meeting$" },
+    float    = true,
+    size     = { "638", "510" },
+    min_size = { 638, 510 },
+    center   = true,
+})
+
+-- Zoom draws its own frames: borders and rounding would outline the transparent
+-- surface instead of the visible content, and animations stutter the video.
+hl.window_rule({ name = "zoom-floating-decoration", match = { class = zoom, float = true }, border_size = 0, rounding = 0, no_anim = true })
+
 -- Opacity Overrides
 local terminals = "^(kitty|ghostty|[Kk]onsole|Alacritty|gnome-terminal|xfce[0-9]?-terminal)$"
 
