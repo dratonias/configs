@@ -234,6 +234,12 @@ type = "sysmon"
 capsule_radius = "auto"
 group_by_workspace = true
 show_active_indicator = false
+# 5.4 dropped the hardcoded primary alpha (0.65 / 0.16) for these two and made
+# the colors configurable. Roles carry no alpha, so only the focused group keeps
+# the accent; unused groups use tertiary_container (tertiary mixed 30% into the
+# surface) instead of the full-opacity outline_variant default.
+workspace_group_active_border_color = "primary"
+workspace_group_inactive_border_color = "tertiary_container"
 workspace_label_placement = "centered"
 
 [widget.tray]
