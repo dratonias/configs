@@ -8,10 +8,14 @@ hl.config({
             natural_scroll = true,
         },
     },
-    -- Uncomment the section below to enable software cursors; this can help with cursor display or behavior issues
-    -- cursor = {
-    --     no_hardware_cursors = 1,
-    -- },
+    cursor = {
+        -- Don't teleport the pointer to the newly focused window when focus
+        -- changes without the mouse (keybinds, windows opening/closing,
+        -- monitor focus). The cursor only moves when you move it.
+        no_warps = true,
+        -- Uncomment to enable software cursors; this can help with cursor display or behavior issues
+        -- no_hardware_cursors = 1,
+    },
 })
 
 hl.gesture({ fingers = 4, direction = "horizontal", action = "workspace" })
